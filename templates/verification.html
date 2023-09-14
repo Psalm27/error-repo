@@ -1,0 +1,9 @@
+{% autoescape off %}
+Hi {{ user.email.split('@')[0]}},
+    Please confirm your registration.
+    http://{{domain}}{% url  'accounts:activate' uidb64=uid token=token %}
+
+     User Email       : {{ user.email }}
+     Time of Request : {{ timestamp}}
+     IP Address      : {{ip_address }}
+{% endautoescape %}

@@ -1,0 +1,15 @@
+{% autoescape off %}
+    Hi {{ user.email.split('@')[0]}},
+    Please reset your password as Requested using the link below.
+    http://{{ domain }}{% url  'accounts:reset_password_validate_url' uidb64=uid token=token %}
+
+
+
+
+     User Name       : {{ user.username }}
+     Time of Request : {{ timestamp}}
+     IP Address      : {{ip_address }}
+
+
+
+{% endautoescape %}
