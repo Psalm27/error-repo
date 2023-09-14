@@ -1,0 +1,52 @@
+.student-profile{
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin-bottom: 10px;
+}
+
+.profile-profile{
+    height: 220px;
+    width: 220px;
+    right: 50px;
+}
+
+.resume-div{
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.resume{
+    height: 220px;
+    width: 220px;
+}
+
+.coverL-div{
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.coverL{
+    height: 220px;
+    width: 220px;
+}
+
+.cert-div{
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.cert{
+    height: 220px;
+    width: 220px;
+}
+
+.title{
+    padding: 30px;
+}
+
+.buttons{
+    padding: 30px;
+}
