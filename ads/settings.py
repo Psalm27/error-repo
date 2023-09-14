@@ -80,9 +80,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': config('DB_NAME'),
         'USER': config('DB_USER'),
-        'PASSWORD': 'Talahasse2000',
+        'PASSWORD': 'ourCare@2022',
         'HOST': config('DB_HOST'),
-        'PORT': '3306',
+        'PORT': '3309',
         'OPTIONS': {
             'sql_mode': 'traditional',
 
