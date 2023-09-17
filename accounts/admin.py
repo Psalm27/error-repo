@@ -4,7 +4,6 @@ from .models import CustomUser, Student, Organization
 
 
 class CustomUserAdmin(UserAdmin):
-    # Specify the field by which you want to order the users
     ordering = ('email',)  # Order by email or any other valid field
 
     # Specify the fields to display in the admin list view
@@ -17,8 +16,8 @@ admin.site.register(CustomUser, CustomUserAdmin)
 
 
 class StudentAdmin(admin.ModelAdmin):
-    list_display = ('first_name', 'last_name', 'index_number', 'level', 'course', 'school', 'is_student')
-    list_filter = ('level', 'course', 'school', 'is_student')
+    list_display = ('first_name', 'last_name', 'index_number', 'level', 'course', 'school')
+    list_filter = ('level', 'course', 'school')
     search_fields = ('first_name', 'last_name', 'index_number')
     ordering = ('last_name', 'first_name')
     fieldsets = ()
@@ -28,8 +27,8 @@ admin.site.register(Student, StudentAdmin)
 
 
 class OrganizationAdmin(admin.ModelAdmin):
-    list_display = ('name', 'industry_type', 'is_organization')
-    list_filter = ('industry_type', 'is_organization')
+    list_display = ('name', 'industry_type')
+    list_filter = ('industry_type',)
     search_fields = ('name', 'industry_type__name')
     ordering = ('name',)
     fieldsets = ()

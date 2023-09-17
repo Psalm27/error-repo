@@ -33,6 +33,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     date_joined = models.DateTimeField(auto_now_add=True)
     is_staff = models.BooleanField(default=False)
     last_login = models.DateTimeField(verbose_name='last login', auto_now=True)
+    is_student = models.BooleanField(default=False)
+    is_organisation = models.BooleanField(default=False)
 
     objects = CustomUserManager()
 
@@ -51,23 +53,19 @@ LevelChoices = (
 )
 
 
-class Student(CustomUser):
+class Student(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     index_number = models.CharField(max_length=15)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     level = models.CharField(max_length=15, choices=LevelChoices, help_text='your student level')
     course = models.ForeignKey(Course, on_delete=models.RESTRICT, related_name='students_course')
     school = models.ForeignKey(School, on_delete=models.RESTRICT, related_name='students_school')
-    is_student = models.BooleanField(default=True)
-
-    # is_active = models.BooleanField(default=False)
 
 
-class Organization(CustomUser):
+class Organization(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     name = models.CharField(max_length=100, help_text='The name of the organization')
     industry_type = models.ForeignKey(Type, on_delete=models.RESTRICT, related_name='organisation_types')
     logo = models.ImageField(blank=True, null=True, upload_to='organisation_logo/%Y/%m/%d/')
-    is_organization = models.BooleanField(default=True)
-    # models.DateTimeField(verbose_name='last login', auto_now=True)
-    # is_active = models.BooleanField(default=False)
 
