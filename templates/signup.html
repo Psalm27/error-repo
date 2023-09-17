@@ -2,103 +2,84 @@
 {% load static %}
 
 {% block content %}
-    <div class="d-flex flex-column flex-root">
-        <div class="d-flex flex-column flex-lg-row flex-column-fluid">
-            <div class="d-flex flex-column flex-lg-row-fluid w-lg-50 p-10 order-2 order-lg-1">
-                <div class="d-flex flex-center flex-column flex-lg-row-fluid">
-                    <div class="w-lg-500px p-10">
-                        <form class="form w-100" novalidate="novalidate" id="kt_sign_in_form"
-                              data-kt-redirect-url="/metronic8/demo3/../demo3/index.html" action="#">
-                            <div class="text-center mb-11">
-                                <h1 class="text-dark fw-bolder mb-3">Register Student</h1>
-                            </div>
-                            <div class="row mb-6">
-                                <!--begin::Label-->
-                                <label class="col-lg-4 col-form-label required fw-semibold fs-6">Full Name</label>
-                                <!--end::Label-->
-                                <!--begin::Col-->
-                                <div class="col-lg-8">
-                                    <!--begin::Row-->
-                                    <div class="row">
-                                        <!--begin::Col-->
-                                        <div class="col-lg-6 fv-row">
-                                            <input type="text" name="fname"
-                                                   class="form-control form-control-lg form-control-solid mb-3 mb-lg-0"
-                                                   placeholder="First name" value="John"/>
-                                        </div>
-                                        <!--end::Col-->
-                                        <!--begin::Col-->
-                                        <div class="col-lg-6 fv-row">
-                                            <input type="text" name="lname"
-                                                   class="form-control form-control-lg form-control-solid"
-                                                   placeholder="Last name" value="Doe"/>
-                                        </div>
-                                        <!--end::Col-->
-                                    </div>
-                                    <!--end::Row-->
-                                </div>
-                                <!--end::Col-->
-                            </div>
-                            <div class="fv-row mb-6">
-                                <input type="email" placeholder="Email" name="email" autocomplete="off"
-                                       class="form-control bg-transparent"/>
-                            </div>
-                            <div class="fv-row mb-10">
-                                <input type="text" placeholder="Index Number" name="Index_Number" autocomplete="off"
-                                       class="form-control bg-transparent"/>
-                            </div>
-                            <div class="fv-row mb-10">
-                                <input type="text" placeholder="Course" name="course" autocomplete="off"
-                                       class="form-control bg-transparent"/>
-                            </div>
-                            <div class="fv-row mb-10">
-                                <select name="level">
-                                    {% for level, label in LevelChoices %}
-                                        <option value="{{ level }}">{{ label }}</option>
-                                    {% endfor %}
-                                </select>
-
-                            </div>
-                            <div class="fv-row mb-6">
-                                <input type="password" placeholder="Password" name="password" autocomplete="off"
-                                       class="form-control bg-transparent"/>
-                            </div>
-                            <div class="fv-row mb-6">
-                                <input type="password" placeholder="Repeat Password" name="repeatPassword"
-                                       autocomplete="off"
-                                       class="form-control bg-transparent"/>
-                            </div>
-                            <div class="text-gray-500 text-center fw-regular fs-7">
-                                Use 8 or more characters with a mix of letters, numbers & symbols
-                            </div>
-                            <div class="fv-row mb-10"></div>
-                            <div class="d-grid mb-10">
-                                <button type="submit" id="kt_sign_up_submit" class="btn btn-primary">
+<div class="d-flex flex-column flex-root">
+    <div class="d-flex flex-column flex-lg-row flex-column-fluid">
+        <div class="d-flex flex-column flex-lg-row-fluid w-lg-50 p-10 order-2 order-lg-1">
+            <div class="d-flex flex-center flex-column flex-lg-row-fluid">
+                <div class="w-lg-500px p-10">
+                    <form class="form w-100" novalidate="novalidate" id="kt_sign_in_form"
+                          data-kt-redirect-url="/metronic8/demo3/../demo3/index.html" action="#">
+                        <div class="text-center mb-11">
+                            <h1 class="text-dark fw-bolder mb-3">Register Student</h1>
+                        </div>
+                        <div class="fv-row mb-10">
+                            <input type="text" placeholder="Firstname" name="first_name" autocomplete="off"
+                                   class="form-control bg-transparent"/>
+                        </div>
+                        <div class="fv-row mb-10">
+                            <input type="text" placeholder="Lastname" name="last_name" autocomplete="off"
+                                   class="form-control bg-transparent"/>
+                        </div>
+                         <div class="fv-row mb-10">
+                            <input type="text" placeholder="Index Number" name="index_number" autocomplete="off"
+                                   class="form-control bg-transparent"/>
+                        </div>
+                        <div class="fv-row mb-10">
+                            <input type="text" placeholder="School" name="school" autocomplete="off"
+                                   class="form-control bg-transparent"/>
+                        </div>
+                        <div class="fv-row mb-10">
+                            <input type="text" placeholder="Level" name="level" autocomplete="off"
+                                   class="form-control bg-transparent"/>
+                        </div>
+                        <div class="fv-row mb-10">
+                            <input type="text" placeholder="Course" name="course" autocomplete="off"
+                                   class="form-control bg-transparent"/>
+                        </div>
+                        <div class="fv-row mb-6">
+                            <input type="email" placeholder="Email" name="email" autocomplete="off"
+                                   class="form-control bg-transparent"/>
+                        </div>
+                        <div class="fv-row mb-6">
+                            <input type="password" placeholder="Password" name="password" autocomplete="off"
+                                   class="form-control bg-transparent"/>
+                        </div>
+                        <div class="fv-row mb-6">
+                            <input type="password" placeholder="Repeat Password" name="repeatPassword" autocomplete="off"
+                                   class="form-control bg-transparent"/>
+                        </div>
+                        <div class="text-gray-500 text-center fw-regular fs-7">
+                            Use 8 or more characters with a mix of letters, numbers & symbols
+                        </div>
+                        <div class="fv-row mb-10"></div>
+                        <div class="d-grid mb-10">
+                            <button type="submit" id="kt_sign_up_submit" class="btn btn-primary">
+                                <a href="" class="link-primary">
                                     <span class="indicator-label">Sign Up</span>
-                                    <span class="indicator-progress">Please wait...
+                                </a>
+                                <span class="indicator-progress">Please wait...
 										<span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
-                                </button>
-                            </div>
-                            <div class="text-gray-500 text-center fw-semibold fs-6">Already have an Account?
-                                <a href="{% url 'accounts:login_url' %}" class="link-primary">Sign In</a></div>
-                        </form>
-                    </div>
+                            </button>
+                        </div>
+                        <div class="text-gray-500 text-center fw-semibold fs-6">Already have an Account?
+                            <a href="{% url 'accounts:login_url'%}" class="link-primary">Sign In</a></div>
+                    </form>
                 </div>
             </div>
-            <div class="d-flex flex-lg-row-fluid w-lg-50 bgi-size-cover bgi-position-center order-1 order-lg-2">
+        </div>
+        <div class="d-flex flex-lg-row-fluid w-lg-50 bgi-size-cover bgi-position-center order-1 order-lg-2">
+            <div class="d-flex flex-column flex-center py-7 py-lg-15 px-5 px-md-15 w-100">
 
-                <div class="d-flex flex-column flex-center py-7 py-lg-15 px-5 px-md-15 w-100">
+                <a href="../../../index.html" class="mb-0 mb-lg-12">
+<!--                    <img alt="Logo" src="{% static 'assets/media/logos/BSA.png'%}" class="h-60px h-lg-75px"/>-->
+                </a>
+                <img class="d-none d-lg-block mx-auto w-275px w-md-50 w-xl-500px mb-30 mb-lg-20"
+                     src="{% static 'assets/media/logos/org2.png'%}" alt=""/>
 
-                    <a href="../../../index.html" class="mb-0 mb-lg-12">
-                        <!--                    <img alt="Logo" src="{% static 'assets/media/logos/BSA.png'%}" class="h-60px h-lg-75px"/>-->
-                    </a>
-                    <img class="d-none d-lg-block mx-auto w-275px w-md-50 w-xl-500px mb-30 mb-lg-20"
-                         src="{% static 'assets/media/logos/org2.png' %}" alt=""/>
-
-                </div>
             </div>
-
         </div>
 
     </div>
+
+</div>
 {% endblock %}

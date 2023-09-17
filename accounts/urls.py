@@ -6,7 +6,7 @@ app_name = 'accounts'
 urlpatterns = [
 
     path('student/<int:student_id>/', student_profile, name='student_profile'),
-    path('organisation/<int:organisation_id>/', organisation_profile, name='organisatin_profile'),
+    path('organisation/<int:organisation_id>/', organisation_profile, name='organisation_profile'),
     path('login/', login_view, name='login_url'),
     path('activate/<uidb64>/<token>/', activate, name='activate'),
     path('ssignup/', register_student, name='register_student'),
