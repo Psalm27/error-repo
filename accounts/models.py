@@ -49,7 +49,7 @@ LevelChoices = (
     ('1', 'level 100'),
     ('2', 'level 200'),
     ('3', 'level 300'),
-    ('1', 'level 400'),
+    ('4', 'level 400'),
 )
 
 
@@ -58,7 +58,7 @@ class Student(models.Model):
     index_number = models.CharField(max_length=15)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
-    level = models.CharField(max_length=15, choices=LevelChoices, help_text='your student level')
+    level = models.IntegerField( choices=LevelChoices, help_text='your student level', default=1)
     course = models.ForeignKey(Course, on_delete=models.RESTRICT, related_name='students_course')
     school = models.ForeignKey(School, on_delete=models.RESTRICT, related_name='students_school')
 
