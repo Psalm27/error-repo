@@ -43,20 +43,24 @@ def student_profile(request, student_id):
 #
 def login_view(request):
     if request.method == 'POST':
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-        user = authenticate(request, email=email, password=password)
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+            user = authenticate(request, email=email, password=password)
 
-        if user is not None:
-            login(request, user)
-            if user.is_student:
-                return redirect('accounts:student_profile', student_id=user.student.id)
-            elif user.is_organization:
-                return redirect('accounts:organization_profile', organization_id=user.organization.id)
-        else:
-            messages.error(request, 'Invalid login credentials.')
+            if user is not None:
+                login(request, user)
+                if hasattr(user, 'student'):
+                    return redirect('accounts:student_das')
+                elif hasattr(user, 'organization'):
+                    return redirect('accounts:organization_profile', organization_id=user.organization.id)
+            else:
+                messages.error(request, 'Invalid login credentials.')
+    else:
+        form = LoginForm()
 
-    return render(request, 'login.html')
+    return render(request, 'login.html', {'form': form})
 
 
 @login_required(login_url='accounts:login_url')
@@ -77,7 +81,7 @@ def activate(request, user_type, uidb64, token):
         if user_type == 'student':
             user = User.objects.get(pk=uid, is_student=True)
         elif user_type == 'organization':
-            user = User.objects.get(pk=uid, is_organization=True)
+            user = User.objects.get(pk=uid, is_organisation=True)
         else:
             user = None
 
@@ -104,11 +108,13 @@ def register_student(request):
         if form.is_valid():
             email = form.cleaned_data['email']
 
-            user = CustomUser.objects.create_user(
+            User = get_user_model()
+            user = User.objects.create_user(
                 email=email,
                 password=form.cleaned_data['password'],
                 is_student=True
             )
+
             student = Student.objects.create(
                 user=user,
                 first_name=form.cleaned_data['first_name'],
@@ -145,6 +151,9 @@ def register_student(request):
     }
 
     return render(request, 'signup.html', context)
+
+
+
 #
 #
 # # def register_staff(request):
@@ -289,3 +298,7 @@ def resetpassword_organ(request):
             return redirect('accounts:reset_organization_password_url')
     else:
         return render(request, 'orgresetpass.html')
+
+
+def dashboard(request):
+    return render(request, 'dashboard.html')

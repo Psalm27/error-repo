@@ -2,17 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from .models import CustomUser, Student, Organization
 
-
-class CustomUserAdmin(UserAdmin):
-    ordering = ('email',)  # Order by email or any other valid field
-
-    # Specify the fields to display in the admin list view
-    list_display = ('email', 'is_active', 'date_joined')
-
-    fieldsets = ()
-
-
-admin.site.register(CustomUser, CustomUserAdmin)
+admin.site.register(CustomUser)
 
 
 class StudentAdmin(admin.ModelAdmin):

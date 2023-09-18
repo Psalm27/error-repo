@@ -3,9 +3,9 @@
 <html lang="en">
 
 <head>
-    <title>as</title>
+    {#    <title>as</title>#}
     <meta charset="utf-8"/>
-    <link rel="shortcut icon" href="{% static 'assets/media/logos/BSA.png'%}"/>
+    <link rel="shortcut icon" href="{% static 'assets/media/logos/BSA.png' %}"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700"/>
     <link href="{% static 'assets/plugins/global/plugins.bundle.css' %}" rel="stylesheet" type="text/css"/>
     <link href="{% static 'assets/css/style.bundle.css' %}" rel="stylesheet" type="text/css"/>
@@ -48,5 +48,7 @@ if (document.documentElement) {
 
 <script src="{% static 'assets/plugins/global/plugins.bundle.js' %}"></script>
 <script src="{% static 'assets/js/scripts.bundle.js' %}"></script>
+<script>var hostUrl = "/metronic8/demo3/assets/";</script>
+<script src="{% static 'assets/js/custom/authentication/sign-in/general.js' %}"></script>
 </body>
 </html>
