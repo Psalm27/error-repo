@@ -107,18 +107,12 @@
                             <!--begin::Input group=-->
                             <div class="fv-row mb-8">
                                 <!--begin::Select-->
-                                <select class="form-select form-select-solid" name="course" data-control="select2"
-                                        data-placeholder="Select Your Course" data-hide-search="true">
-                                    <option value=""></option>
-                                    <option value="1">Computer Science & Engineering</option>
-                                    <option value="2">Business & Management Studies</option>
-                                    <option value="3">Medicine</option>
-                                    <option value="4">Law</option>
-                                    <option value="5">Economics</option>
-                                    <option value="6">Mechanical, Aeronautical & Manufacturing Engineering</option>
-                                    <option value="7">Accounting & Finance</option>
-                                    <option value="8">Psychology</option>
-                                </select>
+                               <select class="form-select form-select-solid" name="course" data-control="select2"
+            data-placeholder="Select Your Course" data-hide-search="true">
+        {% for form in form %}
+            <option value="{{ form.value }}">{{ form.course_name }}</option>
+        {% endfor %}
+    </select>
                                 <!--end::Select-->
                             </div>
                             <div class="fv-row mb-8">
@@ -126,10 +120,10 @@
                                 <select class="form-select form-select-solid" name="level" data-control="select2"
                                         data-placeholder="Select Your Level" data-hide-search="true"
                                         data-menu-style="dropdown-blue">
-                                     <option value="1"> Level 100</option>
-                                     <option value="2"> Level 200</option>
-                                     <option value="3"> Level 300</option>
-                                     <option value="4"> Level 400</option>
+                                    <option value="1"> Level 100</option>
+                                    <option value="2"> Level 200</option>
+                                    <option value="3"> Level 300</option>
+                                    <option value="4"> Level 400</option>
 
                                 </select>
                                 <!--end::Select-->
