@@ -1,6 +1,6 @@
 from django.urls import path
-from .views import student_profile, activate, student_registration,  \
-    resetpassword_validate, forgetpassword, resetpassword_student, dashboard, resetpassword_organ
+from .views import student_profile, activate, student_registration, \
+        resetpassword_validate, forgetpassword, resetpassword_student, dashboard, resetpassword_organ, login_view
 
 #
 # #
@@ -10,7 +10,7 @@ urlpatterns = [
         path('student/profile/<int:student_id>/', student_profile, name='student_profile'),
         path('student/', dashboard, name='student_das'),
     #     #     path('organisation/<int:organisation_id>/', organisation_profile, name='organisation_profile'),
-    #     path('login/', login_view, name='login_url'),
+        path('login/', login_view, name='login_url'),
         path('activate/<uidb64>/<token>/', activate, name='activate'),
         path('ssignup/', student_registration, name='register_student'),
     #     #     # path('osdsignup/', register_staff, name='register_staff'),

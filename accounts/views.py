@@ -50,26 +50,26 @@ def student_profile(request, student_id):
 #     return render(request, 'organisation/organis_profile.html', context)
 #
 #
-# def login_view(request):
-#     if request.method == 'POST':
-#         form = LoginForm(request.POST)
-#         if form.is_valid():
-#             email = form.cleaned_data['email']
-#             password = form.cleaned_data['password']
-#             user = authenticate(request, email=email, password=password)
-#
-#             if user is not None:
-#                 login(request, user)
-#                 if hasattr(user, 'student'):
-#                     return redirect('accounts:student_das')
-#                 elif hasattr(user, 'organization'):
-#                     return redirect('accounts:organization_profile', organization_id=user.organization.id)
-#             else:
-#                 messages.error(request, 'Invalid login credentials.')
-#     else:
-#         form = LoginForm()
-#
-#     return render(request, 'login.html', {'form': form})
+def login_view(request):
+    if request.method == 'POST':
+        form = UserLoginForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+            user = authenticate(request, email=email, password=password)
+
+            if user is not None:
+                login(request, user)
+                if hasattr(user, 'student'):
+                    return redirect('accounts:student_das')
+                elif hasattr(user, 'organization'):
+                    return redirect('accounts:organization_profile', organization_id=user.organization.id)
+            else:
+                messages.error(request, 'Invalid login credentials.')
+    else:
+        form = UserLoginForm()
+
+    return render(request, 'login.html', {'form': form})
 
 
 @login_required(login_url='accounts:login_url')
@@ -107,110 +107,8 @@ def activate(request, user_type, uidb64, token):
         return redirect('register')
 
 
-#
-# def register_studentrd(request):
-#     ip_address = request.META.get('REMOTE_ADDR')
-#     timestamp = datetime.datetime.now()
-#
-#     if request.method == 'POST':
-#         stureg = StudentRegistrationForm(request.POST)
-#         if stureg.is_valid():
-#             email = stureg.cleaned_data['email']
-#
-#             User = get_user_model()
-#             user = User.objects.create_user(
-#                 email=email,
-#                 password=stureg.cleaned_data['password'],
-#                 is_student=True
-#             )
-#
-#             student = Student.objects.create(
-#                 user=user,
-#                 first_name=stureg.cleaned_data['first_name'],
-#                 last_name=stureg.cleaned_data['last_name'],
-#                 index_number=stureg.cleaned_data['index_number'],
-#                 # course=stureg.cleaned_data['course'],
-#                 level=stureg.cleaned_data['level'],
-#                 # school=stureg.cleaned_data['school'],
-#             )
-#             user.save()
-#
-#
-#             # Sending email for verification
-#             current_site = get_current_site(request)
-#             mail_subject = "Account Activation"
-#             message = render_to_string('verification.html', {
-#                 'user': user,
-#                 'domain': current_site.domain,
-#                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-#                 'token': default_token_generator.make_token(user),
-#             })
-#
-#             to_email = email
-#             send_email = EmailMessage(mail_subject, message, to=[to_email])
-#             send_email.send()
-#
-#             messages.success(request, 'Sign up was successful. Please complete your verification from your email.')
-#             return redirect('/accounts/login/?command=verification&email=' + email)
-#     else:
-#
-#         stureg = StudentRegistrationForm()
-#
-#
-#     context = {
-#         "stureg": stureg,
-#         'ip_address': ip_address,
-#         'timestamp': timestamp,
-#     }
-#     # print(form)
-#     return render(request, 'signup.html', context)
 
 
-#
-#
-# # def register_staff(request):
-# #     ip_address = request.META.get('REMOTE_ADDR')
-# #     timestamp = datetime.datetime.now()
-# #     if request.method == 'POST':
-# #         form = OrganizationRegistrationForm(request.POST)
-# #         if form.is_valid():
-# #             name = form.cleaned_data['name']
-# #             email = form.cleaned_data['email']
-# #             industry_type = form.cleaned_data['industry_type']
-# #             logo = form.cleaned_data['logo']
-# #             password = form.cleaned_data['password']
-# #             user = Organization.objects.create_user(name=name, industry_type=industry_type,
-# #                                                     logo=logo, email=email,
-# #                                                     password=password)
-# #             user.save()
-# #             # making my user activation
-# #             if 'next' in request.POST:
-# #                 return redirect(request.POST.get('next'))
-# #
-# #             current_site = get_current_site(request)
-# #             mail_subject = "Accounts Activation"
-# #             message = render_to_string('verification.html', {
-# #                 'user': user,
-# #                 'domain': current_site,
-# #                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-# #                 'token': default_token_generator.make_token(user),
-# #             })
-# #
-# #             to_email = email
-# #             send_email = EmailMessage(mail_subject, message, to=[to_email])
-# #             send_email.send()
-# #             messages.success(request, 'Sign up was successful, please complete your verification from your mail')
-# #             return redirect('/accounts/login/?command=verification&email=' + email)
-# #     else:
-# #         form = OrganizationRegistrationForm()
-# #     context = {
-# #         "form": form,
-# #         'ip_address': ip_address,
-# #         'timestamp': timestamp,
-# #     }
-# #     print(ip_address, timestamp)
-# #     return render(request, 'organisationsignup.html', context)
-#
 
 def forgetpassword(request):
     ip_address = request.META.get('REMOTE_ADDR')
@@ -317,6 +215,8 @@ def dashboard(request):
 
 
 def student_registration(request):
+    ip_address = request.META.get('REMOTE_ADDR')
+    timestamp = datetime.datetime.now()
     if request.method == 'POST':
         form = StudentRegistrationForm(request.POST)
         if form.is_valid():
@@ -329,12 +229,26 @@ def student_registration(request):
                 last_name=form.cleaned_data['last_name'],
                 index_number=form.cleaned_data['index_number'],
                 level=form.cleaned_data['level'],
-
             )
-            profile_url = reverse('accounts:student_profile', kwargs={'student_id': student.id})
-            print(f"Profile URL: {profile_url}")
 
-            return redirect(profile_url)
+            current_site = get_current_site(request)
+            mail_subject = "Account Activation"
+            message = render_to_string('verification.html', {
+                'user': user,
+                'domain': current_site.domain,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'token': default_token_generator.make_token(user),
+            })
+
+            # Assign the email address from the form's cleaned_data to the email variable
+            email = form.cleaned_data['email']
+
+            to_email = email  # Use the correct variable name here
+            send_email = EmailMessage(mail_subject, message, to=[to_email])
+            send_email.send()
+
+            messages.success(request, 'Sign up was successful. Please complete your verification from your email.')
+            return redirect('/accounts/login/?command=verification&email=' + email)
 
     else:
         form = StudentRegistrationForm()
