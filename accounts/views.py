@@ -230,7 +230,7 @@ def student_registration(request):
                 index_number=form.cleaned_data['index_number'],
                 level=form.cleaned_data['level'],
             )
-# hfgd the repo
+
             current_site = get_current_site(request)
             mail_subject = "Account Activation"
             message = render_to_string('verification.html', {
