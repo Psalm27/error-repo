@@ -58,14 +58,14 @@ class Student(models.Model):
     index_number = models.CharField(max_length=15)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
-    level = models.IntegerField( choices=LevelChoices, help_text='your student level', default=1)
-    course = models.ForeignKey(Course, on_delete=models.RESTRICT, related_name='students_course')
-    school = models.ForeignKey(School, on_delete=models.RESTRICT, related_name='students_school')
+    level = models.IntegerField(choices=LevelChoices, help_text='your student level', default=1)
+    course = models.ForeignKey(Course, on_delete=models.RESTRICT, related_name='students_course', blank=True, null=True)
+    school = models.ForeignKey(School, on_delete=models.RESTRICT, related_name='students_school', blank=True, null=True)
 
 
 class Organization(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     name = models.CharField(max_length=100, help_text='The name of the organization')
-    industry_type = models.ForeignKey(Type, on_delete=models.RESTRICT, related_name='organisation_types')
+    industry_type = models.ForeignKey(Type, on_delete=models.RESTRICT, related_name='organisation_types', blank=True, null=True)
     logo = models.ImageField(blank=True, null=True, upload_to='organisation_logo/%Y/%m/%d/')
 

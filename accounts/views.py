@@ -1,10 +1,12 @@
 import datetime
 from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse
+
 from .models import Student, Organization, CustomUser
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth import authenticate, login, get_user_model
 from django.contrib import messages, auth
-from .forms import LoginForm, StudentRegistrationForm
+from .forms import UserLoginForm, StudentRegistrationForm
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -19,13 +21,20 @@ from django.contrib.auth.decorators import login_required, permission_required
 #
 # # Create your views here.
 #
-@login_required(login_url='accounts:login_url')
-@permission_required('can_view_student_profile', raise_exception=True)
+# @login_required(login_url='accounts:login_url')
+# @permission_required('can_view_student_profile', raise_exception=True)
 def student_profile(request, student_id):
     student = get_object_or_404(Student, pk=student_id)
-    if not request.user.is_staff and not request.user == student:
+
+    # Check permissions
+    if not (request.user.is_staff or request.user == student.user):
         raise PermissionDenied("You do not have permission to view this student's profile.")
+
+    print(f"Student ID: {student_id}")
+    print(f"Student User ID: {student.user.id}")
+    print(f"Request User ID: {request.user.id}")
     context = {'student': student}
+    print(student)
     return render(request, 'student/student_profile.html', context)
 
 
@@ -41,26 +50,26 @@ def student_profile(request, student_id):
 #     return render(request, 'organisation/organis_profile.html', context)
 #
 #
-def login_view(request):
-    if request.method == 'POST':
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            email = form.cleaned_data['email']
-            password = form.cleaned_data['password']
-            user = authenticate(request, email=email, password=password)
-
-            if user is not None:
-                login(request, user)
-                if hasattr(user, 'student'):
-                    return redirect('accounts:student_das')
-                elif hasattr(user, 'organization'):
-                    return redirect('accounts:organization_profile', organization_id=user.organization.id)
-            else:
-                messages.error(request, 'Invalid login credentials.')
-    else:
-        form = LoginForm()
-
-    return render(request, 'login.html', {'form': form})
+# def login_view(request):
+#     if request.method == 'POST':
+#         form = LoginForm(request.POST)
+#         if form.is_valid():
+#             email = form.cleaned_data['email']
+#             password = form.cleaned_data['password']
+#             user = authenticate(request, email=email, password=password)
+#
+#             if user is not None:
+#                 login(request, user)
+#                 if hasattr(user, 'student'):
+#                     return redirect('accounts:student_das')
+#                 elif hasattr(user, 'organization'):
+#                     return redirect('accounts:organization_profile', organization_id=user.organization.id)
+#             else:
+#                 messages.error(request, 'Invalid login credentials.')
+#     else:
+#         form = LoginForm()
+#
+#     return render(request, 'login.html', {'form': form})
 
 
 @login_required(login_url='accounts:login_url')
@@ -99,59 +108,62 @@ def activate(request, user_type, uidb64, token):
 
 
 #
-def register_student(request):
-    ip_address = request.META.get('REMOTE_ADDR')
-    timestamp = datetime.datetime.now()
-
-    if request.method == 'POST':
-        form = StudentRegistrationForm(request.POST)
-        if form.is_valid():
-            email = form.cleaned_data['email']
-
-            User = get_user_model()
-            user = User.objects.create_user(
-                email=email,
-                password=form.cleaned_data['password'],
-                is_student=True
-            )
-
-            student = Student.objects.create(
-                user=user,
-                first_name=form.cleaned_data['first_name'],
-                last_name=form.cleaned_data['last_name'],
-                index_number=form.cleaned_data['index_number'],
-                course=form.cleaned_data['course'],
-                level=form.cleaned_data['level'],
-                school=form.cleaned_data['school'],
-            )
-
-            # Sending email for verification
-            current_site = get_current_site(request)
-            mail_subject = "Account Activation"
-            message = render_to_string('verification.html', {
-                'user': user,
-                'domain': current_site.domain,
-                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-                'token': default_token_generator.make_token(user),
-            })
-
-            to_email = email
-            send_email = EmailMessage(mail_subject, message, to=[to_email])
-            send_email.send()
-
-            messages.success(request, 'Sign up was successful. Please complete your verification from your email.')
-            return redirect('/accounts/login/?command=verification&email=' + email)
-    else:
-        form = StudentRegistrationForm()
-
-    context = {
-        "form": form,
-        'ip_address': ip_address,
-        'timestamp': timestamp,
-    }
-
-    return render(request, 'signup.html', context)
-
+# def register_studentrd(request):
+#     ip_address = request.META.get('REMOTE_ADDR')
+#     timestamp = datetime.datetime.now()
+#
+#     if request.method == 'POST':
+#         stureg = StudentRegistrationForm(request.POST)
+#         if stureg.is_valid():
+#             email = stureg.cleaned_data['email']
+#
+#             User = get_user_model()
+#             user = User.objects.create_user(
+#                 email=email,
+#                 password=stureg.cleaned_data['password'],
+#                 is_student=True
+#             )
+#
+#             student = Student.objects.create(
+#                 user=user,
+#                 first_name=stureg.cleaned_data['first_name'],
+#                 last_name=stureg.cleaned_data['last_name'],
+#                 index_number=stureg.cleaned_data['index_number'],
+#                 # course=stureg.cleaned_data['course'],
+#                 level=stureg.cleaned_data['level'],
+#                 # school=stureg.cleaned_data['school'],
+#             )
+#             user.save()
+#
+#
+#             # Sending email for verification
+#             current_site = get_current_site(request)
+#             mail_subject = "Account Activation"
+#             message = render_to_string('verification.html', {
+#                 'user': user,
+#                 'domain': current_site.domain,
+#                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+#                 'token': default_token_generator.make_token(user),
+#             })
+#
+#             to_email = email
+#             send_email = EmailMessage(mail_subject, message, to=[to_email])
+#             send_email.send()
+#
+#             messages.success(request, 'Sign up was successful. Please complete your verification from your email.')
+#             return redirect('/accounts/login/?command=verification&email=' + email)
+#     else:
+#
+#         stureg = StudentRegistrationForm()
+#
+#
+#     context = {
+#         "stureg": stureg,
+#         'ip_address': ip_address,
+#         'timestamp': timestamp,
+#     }
+#     # print(form)
+#     return render(request, 'signup.html', context)
 
 
 #
@@ -302,3 +314,28 @@ def resetpassword_organ(request):
 
 def dashboard(request):
     return render(request, 'dashboard.html')
+
+
+def student_registration(request):
+    if request.method == 'POST':
+        form = StudentRegistrationForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.is_student = True
+            user.save()
+            student = Student.objects.create(
+                user=user,
+                first_name=form.cleaned_data['first_name'],
+                last_name=form.cleaned_data['last_name'],
+                index_number=form.cleaned_data['index_number'],
+                level=form.cleaned_data['level'],
+
+            )
+            profile_url = reverse('accounts:student_profile', kwargs={'student_id': student.id})
+            print(f"Profile URL: {profile_url}")
+
+            return redirect(profile_url)
+
+    else:
+        form = StudentRegistrationForm()
+    return render(request, 'dsignup.html', {'form': form})
